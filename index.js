@@ -35,12 +35,13 @@ async function requestThePrice() {
 bot.on("message", async (ctx) => {
 	// get username
 	const username = ctx.message.from.username;
-	console.log("requested price by", username);
 	if (ctx.message.text === "/price") {
+		console.log("requested price by", username);
 		const price = await requestThePrice();
 		ctx.reply(price);
 	}
 	if (ctx.message.text === "/start") {
+		console.log("greeted", username);
 		ctx.reply(
 			"Welcome to the unofficial Mandala Exchange Bot! You can use /price to get the current price of MDXUSDT. This bot is not affiliated with Mandala Exchange and is being maintained by the community. If you have any questions or feedback, please reach out to @jan_may.",
 		);
