@@ -28,7 +28,7 @@ async function requestThePrice() {
 			return "Error fetching price. Please try again later. We are already working on it!";
 		}
 	} else {
-		return `The current price of ${ticker_to_watch} is ${cached_price} CACHED`;
+		return `The current price of ${ticker_to_watch} is ${cached_price}`;
 	}
 }
 
