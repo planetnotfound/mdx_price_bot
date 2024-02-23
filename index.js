@@ -6,6 +6,9 @@ const endpoint = "https://api.trade.mandala.exchange/api/3/public/price/ticker";
 const ticker_to_watch = "MDXUSDT"; // mdx to the moon!
 
 bot.on("message", async (ctx) => {
+	// get username
+	const username = ctx.message.from.username;
+	console.log("requested price by", username);
 	if (ctx.message.text === "/price") {
 		const response = await fetch(endpoint).then((response) => {
 			return response.json();
