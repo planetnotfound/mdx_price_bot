@@ -26,4 +26,4 @@ npm start
 
 ## License
 
-Licensed under the [MIT License]. Built for the Mandala Community by a volunteer developer.
+Licensed under the MIT License. Built for the Mandala Community by a volunteer developer.
