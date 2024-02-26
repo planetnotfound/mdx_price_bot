@@ -10,7 +10,7 @@ const ticker_to_watch = "MDXUSDT"; // mdx to the moon!
 
 let can_request_price = true;
 let cached_price = 0;
-let cached_volume_usdt = 0;
+let cached_volume = 0;
 /**
  * Returns the price but throttles the request to 1 request every 5 seconds
  * @returns
@@ -23,18 +23,18 @@ async function requestThePrice() {
 			});
 			const mdx_ticker = response;
 			cached_price = mdx_ticker.last;
-			cached_volume_usdt = (mdx_ticker.volume * mdx_ticker.last).toFixed(2);
+			cached_volume = mdx_ticker.volume;
 			can_request_price = false;
 			setTimeout(() => {
 				can_request_price = true;
 			}, 5000);
-			return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of $${cached_volume_usdt}`;
+			return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of ${cached_volume} MDX traded in the last 24 hours.`;
 		} catch (error) {
 			console.error(error);
 			return "Error fetching price. Please try again later. We are already working on it!";
 		}
 	} else {
-		return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of $${cached_volume_usdt}`;
+		return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of ${cached_volume} MDX traded in the last 24 hours.`;
 	}
 }
 
