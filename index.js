@@ -15,7 +15,7 @@ let cached_mdx_ticker = {};
  * Generates the price information message
  */
 function generatePriceMessage(mdx_ticker) {
-	let message = `* ${ticker_to_watch} Price Information *`;
+	let message = `*${ticker_to_watch} Price Information *`;
 	message += `\nLast Price: \`$${mdx_ticker.last}\``;
 	message += `\nVolume: \`${mdx_ticker.volume} MDX\``;
 	message += `\n24h High: \`$${mdx_ticker.high}\``;
@@ -65,12 +65,8 @@ bot.on("message", async (ctx) => {
 	}
 	if (ctx.message.text === "/start") {
 		console.log("greeted", username);
-		ctx.reply(
-			"Welcome to the unofficial Mandala Exchange Price Bot! You can use /price to get the current price of MDXUSDT. This bot is not affiliated with Mandala Exchange and is being maintained by the community. If you have any questions or feedback, please reach out to @jan_may.",
-			{
-				parse_mode: "Markdown",
-			},
-		);
+		const welcomeMessage = `Welcome to the unofficial Mandala Exchange Price Bot, @${username}!\n\nYou can use /price to get the current price of MDXUSDT. This bot is not affiliated with Mandala Exchange and is being maintained by the community. If you have any questions or feedback, please reach out to @jan_may.`;
+		ctx.reply(welcomeMessage);
 	}
 });
 
