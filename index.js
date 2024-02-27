@@ -17,7 +17,7 @@ let cached_mdx_ticker = {};
 function generatePriceMessage(mdx_ticker) {
 	let message = `*${ticker_to_watch} Price Information *`;
 	message += `\nLast Price: \`$${mdx_ticker.last}\``;
-	message += `\nVolume: \`${mdx_ticker.volume} MDX\``;
+	message += `\n24h Volume: \`${mdx_ticker.volume} MDX\``;
 	message += `\n24h High: \`$${mdx_ticker.high}\``;
 	message += `\n24h Low: \`$${mdx_ticker.low}\``;
 
