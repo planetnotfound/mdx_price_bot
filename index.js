@@ -9,8 +9,21 @@ const endpoint =
 const ticker_to_watch = "MDXUSDT"; // mdx to the moon!
 
 let can_request_price = true;
-let cached_price = 0;
-let cached_volume = 0;
+let cached_mdx_ticker = {};
+
+/**
+ * Generates the price information message
+ */
+function generatePriceMessage(mdx_ticker) {
+	let message = `* ${ticker_to_watch} Price Information *`;
+	message += `\nLast Price: \`$${mdx_ticker.last}\``;
+	message += `\nVolume: \`${mdx_ticker.volume} MDX\``;
+	message += `\n24h High: \`$${mdx_ticker.high}\``;
+	message += `\n24h Low: \`$${mdx_ticker.low}\``;
+
+	return message;
+}
+
 /**
  * Returns the price but throttles the request to 1 request every 5 seconds
  * @returns
@@ -22,19 +35,21 @@ async function requestThePrice() {
 				return response.json();
 			});
 			const mdx_ticker = response;
-			cached_price = mdx_ticker.last;
-			cached_volume = mdx_ticker.volume;
-			can_request_price = false;
+			if (!mdx_ticker.last) {
+				console.error("Error fetching price", mdx_ticker);
+				return "Error fetching price. Please try again later. We are already working on it!";
+			}
+			cached_mdx_ticker = mdx_ticker;
 			setTimeout(() => {
 				can_request_price = true;
 			}, 5000);
-			return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of ${cached_volume} MDX traded in the last 24 hours.`;
+			return generatePriceMessage(cached_mdx_ticker);
 		} catch (error) {
 			console.error(error);
 			return "Error fetching price. Please try again later. We are already working on it!";
 		}
 	} else {
-		return `The current price of ${ticker_to_watch} is $${cached_price} with a volume of ${cached_volume} MDX traded in the last 24 hours.`;
+		return generatePriceMessage(cached_mdx_ticker);
 	}
 }
 
@@ -44,12 +59,17 @@ bot.on("message", async (ctx) => {
 	if (ctx.message.text === "/price") {
 		console.log("requested price by", username);
 		const price = await requestThePrice();
-		ctx.reply(price);
+		ctx.reply(price, {
+			parse_mode: "Markdown",
+		});
 	}
 	if (ctx.message.text === "/start") {
 		console.log("greeted", username);
 		ctx.reply(
 			"Welcome to the unofficial Mandala Exchange Price Bot! You can use /price to get the current price of MDXUSDT. This bot is not affiliated with Mandala Exchange and is being maintained by the community. If you have any questions or feedback, please reach out to @jan_may.",
+			{
+				parse_mode: "Markdown",
+			},
 		);
 	}
 });
