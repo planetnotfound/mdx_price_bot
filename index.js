@@ -15,9 +15,12 @@ let cached_mdx_ticker = {};
  * Generates the price information message
  */
 function generatePriceMessage(mdx_ticker) {
-	let message = `*${ticker_to_watch} Price Information *`;
+	let message = `*${ticker_to_watch} Price Information *\n`;
 	message += `\nLast Price: \`$${mdx_ticker.last}\``;
-	message += `\n24h Volume: \`${mdx_ticker.volume} MDX\``;
+	message += `\n24h MDXT Volume: \`${mdx_ticker.volume} MDX\``;
+	message += `\n24h USDT Volume: $\`${parseFloat(
+		mdx_ticker.volume_quote,
+	).toFixed(2)} \``;
 	message += `\n24h High: \`$${mdx_ticker.high}\``;
 	message += `\n24h Low: \`$${mdx_ticker.low}\``;
 
@@ -31,10 +34,10 @@ function generatePriceMessage(mdx_ticker) {
 async function requestThePrice() {
 	if (can_request_price) {
 		try {
-			const response = await fetch(endpoint).then((response) => {
-				return response.json();
+			const responsePrice = await fetch(endpoint).then((responsePrice) => {
+				return responsePrice.json();
 			});
-			const mdx_ticker = response;
+			const mdx_ticker = responsePrice;
 			if (!mdx_ticker.last) {
 				console.error("Error fetching price", mdx_ticker);
 				return "Error fetching price. Please try again later. We are already working on it!";
