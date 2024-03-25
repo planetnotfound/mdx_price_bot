@@ -23,7 +23,7 @@ async function generatePriceMessage(mdx_ticker) {
 		let message = `🤖 *${ticker_to_watch} Price Information 🤖*\n`;
 		message += `\nLast Price: \`$${mdx_ticker.last}\``;
 		message += `\n24h MDXT Volume: \`${mdx_ticker.volume} MDX\``;
-		message += `\n24h USDT Volume: $\`${parseFloat(
+		message += `\n24h USDT Volume: $\`${Number.parseFloat(
 			mdx_ticker.volume_quote,
 		).toFixed(2)} \``;
 		message += `\n24h High: \`$${mdx_ticker.high}\``;
@@ -37,16 +37,16 @@ async function generatePriceMessage(mdx_ticker) {
 		console.error("An error has occurred.", error);
 		// send a message to the maintainer
 
-		sendMessageInGroup();
+		sendMessageInGroup(error);
 		return "Uh oh...\n`Something went wrong 😵`\n\n*Error fetching trading information. Something went wrong on the bots or API side. We will be back soon, bot maintainer has been notified!*";
 	}
 }
 
-function sendMessageInGroup() {
+function sendMessageInGroup(error) {
 	try {
 		bot.telegram.sendMessage(
 			process.env.GROUP_ID,
-			`Price bot reported problem at ${Date.now()}. Please check the logs.`,
+			`Price bot reported problem at ${Date.now()}. Please check the logs. Error information: ${error}`,
 			{
 				parse_mode: "Markdown",
 			},
